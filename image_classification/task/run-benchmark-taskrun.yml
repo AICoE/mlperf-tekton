@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: run-run
+  namespace: mlperf
+spec:
+  taskRef:
+    name: run-benchmark
+  serviceAccount: image-classification
+  inputs:
+    resources:
+      - name: build-image
+        resourceRef:
+          name: build-image

@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: tf-build-pipeline-run
+spec:
+  serviceAccount: image-classification
+  pipelineRef:
+    name: image-classification
+  resources:
+  - name: repo
+    resourceRef:
+      name: repo
+  - name: build-image
+    resourceRef:
+      name: build-image
