@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: run-benchmark
+spec:
+  inputs:
+    resources:
+    - name: image
+      type: image
+  steps:
+    - name: run
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf/image_classification/tensorflow
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "./run_and_time_result.sh"]
+    - name: ls
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf
+      securityContext:
+        privileged: true
+      command: ["ls"]
