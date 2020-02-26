@@ -1,0 +1,21 @@
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: sa-repo
+spec:
+  type: git
+  params:
+    - name: url
+      value: https://github.com/AICoE/mlperf-training.git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: sa-build-image
+spec:
+  type: image
+  params:
+    - name: url
+      value: docker-registry.default.svc:5000/mlperf/sentiment-analysis:latest
+---

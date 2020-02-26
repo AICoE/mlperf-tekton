@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: sa-run-benchmark
+spec:
+  inputs:
+    resources:
+    - name: image
+      type: image
+  steps:
+    - name: run
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf/sentiment_analysis/paddle
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "./run_and_time.sh", "123456"]
