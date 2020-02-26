@@ -1,0 +1,33 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: sentiment-analysis
+spec:
+  resources:
+    - name: sa-repo
+      type: git
+    - name: sa-build-image
+      type: image
+
+  tasks:
+    - name: build
+      taskRef:
+        name: buildah
+        kind: Task
+      resources:
+        inputs:
+          - name: source
+            resource: sa-repo
+        outputs:
+          - name: image
+            resource: sa-build-image
+    - name: run
+      taskRef:
+        name: run-benchmark
+        kind: Task
+      resources:
+        inputs:
+          - name: image
+            resource: sa-build-image
+      runAfter:
+        - build

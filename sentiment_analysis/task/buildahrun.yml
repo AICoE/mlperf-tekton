@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: buildah-run
+  namespace: mlperf
+spec:
+  taskRef:
+    name: buildah
+  serviceAccount: sentiment-analysis
+  inputs:
+    resources:
+      - name: repo
+        resourceRef:
+          name: repo
+  outputs:
+    resources:
+      - name: build-image
+        resourceRef:
+          name: build-image
