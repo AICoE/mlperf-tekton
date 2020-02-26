@@ -1,0 +1,39 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: sentiment-analysis-template
+  annotations:
+    openshift.io/display-name: "Sentiment Analysis Job Template"
+    description: >-
+      This is a template for running the mlperf sentiment_analysis benchmark job.
+    tags: "image-classifiation,benchmark,mlperf"
+    openshift.io/provider-display-name: "MLPerf"
+    openshift.io/documentation-url: "https://github.com/mlperf/training"
+    openshift.io/support-url: "support@mlperf.org"
+    message: "tbd"
+  labels:
+    template: "sentiment-analysis-template"
+    app: "training"
+
+objects:
+  - kind: Job
+    apiVersion: batch/v1
+    metadata:
+      name: training
+    spec:
+      parallelism: 1    
+      completions: 1  
+      template:
+        metadata:
+          name: training
+        spec:
+          containers:
+          - name: training
+            image: training:latest
+            imagePullPolicy: IfNotPresent
+            command: ["/bin/bash", "run_and_time.sh"]
+          restartPolicy: Never
+
+message: "Running sentiment_analysis benchmark"
+
+
