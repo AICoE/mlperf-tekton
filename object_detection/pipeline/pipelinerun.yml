@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  generateName: object-detection-pipelinerun-
+spec:
+  serviceAccount: mlperf
+  pipelineRef:
+    name: object-detection
+  resources:
+  - name: repo
+    resourceRef:
+      name: od-repo
+  - name: build-image
+    resourceRef:
+      name: od-build-image
+  podTemplate:
+    volumes:
+    - name: od-dataset-volume
+      persistentVolumeClaim:
+        claimName: od-pvc
+    - name: od-runtime-volume
+      persistentVolumeClaim:
+        claimName: od-runtime-pvc
