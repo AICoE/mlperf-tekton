@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: od-datasetrun
+  namespace: mlperf
+spec:
+  taskRef:
+    name: od-dataset
+  serviceAccount: mlperf
+  inputs:
+    resources:
+      - name: od-build-image
+        resourceRef:
+          name: od-build-image

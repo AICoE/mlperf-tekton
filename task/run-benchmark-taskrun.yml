@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: ic-taskrun
+  namespace: mlperf
+spec:
+  taskRef:
+    name: ic-run
+  serviceAccount: mlperf
+  inputs:
+    resources:
+      - name: build-image
+        resourceRef:
+          name: ic-build-image

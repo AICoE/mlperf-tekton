@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: ic-run
+spec:
+  inputs:
+    resources:
+    - name: image
+      type: image
+    params:
+    - name: WORKINGDIR
+      description: The location of the run file.
+  steps:
+    - name: run
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf/$(inputs.params.WORKINGDIR)
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "./run_and_time.sh"]
