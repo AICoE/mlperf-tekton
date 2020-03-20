@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  name: repo
+  name: ic-repo
 spec:
   type: git
   params:
@@ -12,10 +12,10 @@ spec:
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  name: build-image
+  name: ic-build-image
 spec:
   type: image
   params:
     - name: url
-      value: image-registry.openshift-image-registry.svc:5000/mlperf/image-classification:latest
+      value: docker-registry.default.svc:5000/mlperf/image-classification:latest
 ---

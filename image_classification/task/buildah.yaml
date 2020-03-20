@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
-  name: buildah
+  name: ic-buildah
 spec:
   inputs:
     params:
@@ -26,15 +26,6 @@ spec:
       type: image
 
   steps:
-  - name: ls
-    image: $(inputs.params.BUILDER_IMAGE)
-    workingDir: /workspace/source
-    command: ["ls"]
-    volumeMounts:
-    - name: varlibcontainers
-      mountPath: /var/lib/containers
-    securityContext:
-      privileged: true
   - name: build
     image: $(inputs.params.BUILDER_IMAGE)
     workingDir: /workspace/source
