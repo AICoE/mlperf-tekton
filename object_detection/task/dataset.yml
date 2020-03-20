@@ -1,22 +1,30 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
-  name: od-run
+  name: od-dataset
 spec:
   inputs:
     resources:
     - name: image
       type: image
+  outputs:
+    resources:
+    - name: image
+      type: image
   steps:
-    - name: run
+    - name: download
       image: $(inputs.resources.image.url)
       workingDir: /mlperf/object_detection
+      resources:
+        limits:
+          memory: "8Gi"
+          cpu: "8"
+        requests:
+          memory: "6Gi"
+          cpu: "6"
       volumeMounts:
         - name: od-dataset-volume
           mountPath: /mlperf/object_detection/pytorch/datasets/coco
-        - name: od-runtime-volume
-          mountPath: /dev/shm
       securityContext:
         privileged: true
-      command: ["/bin/sh", "./run_and_time.sh"]
-  
+      command: ["/bin/sh", "./download_dataset.sh"]

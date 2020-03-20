@@ -20,13 +20,26 @@ spec:
         outputs:
           - name: image
             resource: build-image
+    - name: dataset
+      taskRef:
+        name: od-dataset
+        kind: Task
+      resources:
+        inputs:
+          - name: image
+            resource: build-image
+        outputs:
+          - name: image
+            resource: build-image
+      runAfter:
+        - build
     - name: run
       taskRef:
-        name: run-od
+        name: od-run
         kind: Task
       resources:
         inputs:
           - name: image
             resource: build-image
       runAfter:
-        - build
+        - dataset
