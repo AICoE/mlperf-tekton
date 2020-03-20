@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: object-detection
+spec:
+  resources:
+    - name: repo
+      type: git
+    - name: build-image
+      type: image 
+  tasks:
+    - name: build
+      taskRef:
+        name: od-buildah
+        kind: Task
+      resources:
+        inputs:
+          - name: source
+            resource: repo
+        outputs:
+          - name: image
+            resource: build-image
+    - name: run
+      taskRef:
+        name: run-od
+        kind: Task
+      resources:
+        inputs:
+          - name: image
+            resource: build-image
+      runAfter:
+        - build

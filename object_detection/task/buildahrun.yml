@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: od-buildah-run
+  namespace: mlperf
+spec:
+  taskRef:
+    name: od-buildah
+  serviceAccount: object-detection
+  inputs:
+    resources:
+      - name: od-repo
+        resourceRef:
+          name: od-repo
+  outputs:
+    resources:
+      - name: od-build-image
+        resourceRef:
+          name: od-build-image

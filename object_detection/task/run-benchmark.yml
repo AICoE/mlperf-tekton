@@ -1,0 +1,35 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: run-od
+spec:
+  inputs:
+    resources:
+    - name: image
+      type: image
+  steps:
+    - name: ls
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf/object_detection
+      volumeMounts:
+        - name: od-dataset-volume
+          mountPath: /mlperf/object_detection/pytorch/datasets/coco
+        - name: od-runtime-volume
+          mountPath: /dev/shm
+      securityContext:
+        privileged: true
+      command: ["ls"]
+    - name: run
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf/object_detection
+      volumeMounts:
+        - name: od-dataset-volume
+          mountPath: /mlperf/object_detection/pytorch/datasets/coco
+        - name: od-runtime-volume
+          mountPath: /dev/shm
+        # - name: od-config-volume
+        #   mountPath: /etc/config
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "./run_and_time.sh"]
+  

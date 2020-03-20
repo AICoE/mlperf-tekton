@@ -1,0 +1,66 @@
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: od-buildah
+spec:
+  inputs:
+    params:
+    - name: BUILDER_IMAGE
+      description: The location of the buildah builder image.
+      default: quay.io/buildah/stable:v1.11.0
+    - name: DOCKERFILE
+      description: Path to the Dockerfile to build.
+      default: object_detection/Dockerfile
+    - name: TLSVERIFY
+      description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
+      default: "false"
+
+    resources:
+    - name: source
+      type: git
+
+  outputs:
+    resources:
+    - name: image
+      type: image
+
+  steps:
+  - name: build
+    image: $(inputs.params.BUILDER_IMAGE)
+    workingDir: /workspace/source
+    volumeMounts:
+    - name: varlibcontainers
+      mountPath: /var/lib/containers
+    command: ["buildah", "bud", '--tls-verify=$(inputs.params.TLSVERIFY)', '--layers', '-f', '$(inputs.params.DOCKERFILE)', '-t', '$(outputs.resources.image.url)', '.']
+    securityContext:
+      privileged: true
+  - name: push
+    image: $(inputs.params.BUILDER_IMAGE)
+    workingDir: /workspace/source
+    volumeMounts:
+    - name: varlibcontainers
+      mountPath: /var/lib/containers
+    command: ['buildah', 'push', '--tls-verify=$(inputs.params.TLSVERIFY)', '$(outputs.resources.image.url)', 'docker://$(outputs.resources.image.url)']
+    securityContext:
+      privileged: true
+  - name: download-dataset
+    image: $(inputs.resources.image.url)
+    workingDir: /mlperf/object_detection
+    resources:
+      limits:
+        memory: "8Gi"
+        cpu: "8"
+      requests:
+        memory: "6Gi"
+        cpu: "6"
+    volumeMounts:
+      - name: od-volume
+        mountPath: /mlperf/object_detection/pytorch/datasets/coco
+    securityContext:
+      privileged: true
+    command: ["/bin/sh", "./download_dataset.sh"]
+
+  volumes:
+  - name: varlibcontainers
+    emptyDir: {}
