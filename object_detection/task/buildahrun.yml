@@ -6,7 +6,7 @@ metadata:
 spec:
   taskRef:
     name: od-buildah
-  serviceAccount: object-detection
+  serviceAccount: mlperf
   inputs:
     resources:
       - name: od-repo

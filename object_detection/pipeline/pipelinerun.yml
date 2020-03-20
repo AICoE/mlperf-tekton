@@ -6,6 +6,7 @@ spec:
   serviceAccount: mlperf
   pipelineRef:
     name: object-detection
+  timeout: "0"
   resources:
   - name: repo
     resourceRef:
