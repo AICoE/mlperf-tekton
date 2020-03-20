@@ -12,7 +12,7 @@ spec:
   tasks:
     - name: build
       taskRef:
-        name: buildah
+        name: ic-buildah
         kind: Task
       resources:
         inputs:
@@ -23,7 +23,7 @@ spec:
             resource: build-image
     - name: run
       taskRef:
-        name: run-benchmark
+        name: ic-run
         kind: Task
       resources:
         inputs:
