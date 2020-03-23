@@ -1,40 +1,32 @@
-apiVersion: v1
-kind: Template
+
+apiVersion: tekton.dev/v1alpha1
+kind: Task
 metadata:
-  name: dataset-template
-  annotations:
-    description: "Description"
-    iconClass: "icon-redis"
-    tags: "database,nosql"
-objects:
-- apiVersion: tekton.dev/v1alpha1
-  kind: Task
-  metadata:
-    name: dataset
-  spec:
-    inputs:
-      resources:
-      - name: image
-        type: image
-    steps:
-      - name: download
-        image: $(inputs.resources.image.url)
-        workingDir: /mlperf/${WORKINGDIR}
-        volumeMounts:
-          - name: od-dataset-volume
-            mountPath: /mlperf/object_detection/pytorch/datasets/coco
-        securityContext:
-          privileged: true
-        command: ["/bin/sh", "./download_dataset.sh"]
-      - name: verify
-        image: $(inputs.resources.image.url)
-        workingDir: /mlperf/${WORKINGDIR}
-        volumeMounts:
-          - name: od-dataset-volume
-            mountPath: /mlperf/object_detection/pytorch/datasets/coco
-        securityContext:
-          privileged: true
-        command: ["/bin/sh", "./verify_dataset.sh"]
-parameters:
-- name: WORKINGDIR
-  description: Directory containing download and verify files
+  name: dataset
+spec:
+  inputs:
+    params:
+    - name: WORKINGDIR
+      description: Directory containing download and verify files
+    resources:
+    - name: image
+      type: image
+  steps:
+    - name: download
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf/$(inputs.params.WORKINGDIR)
+      volumeMounts:
+        - name: od-dataset-volume
+          mountPath: /mlperf/object_detection/pytorch/datasets/coco
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "./download_dataset.sh"]
+    - name: verify
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf/$(inputs.params.WORKINGDIR)
+      volumeMounts:
+        - name: od-dataset-volume
+          mountPath: /mlperf/object_detection/pytorch/datasets/coco
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "./verify_dataset.sh"]

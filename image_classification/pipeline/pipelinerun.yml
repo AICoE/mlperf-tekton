@@ -5,7 +5,14 @@ metadata:
 spec:
   serviceAccount: mlperf
   pipelineRef:
-    name: image-classification
+    name: mlperf-pipeline
+  params:
+    - name: DOCKERFILE
+      value: image_classification/tensorflow/Dockerfile
+    - name: DATASET_DIR
+      value: "image_classification"
+    - name: RUN_DIR
+      value: "image_classification/tensorflow"
   resources:
   - name: repo
     resourceRef:
