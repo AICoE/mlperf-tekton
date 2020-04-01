@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: rnn-translator-pipeline-run
+spec:
+  serviceAccount: mlperf
+  pipelineRef:
+    name: rnn-translator
+  timeout: "0"
+  resources:
+  - name: rnn-repo
+    resourceRef:
+      name: rnn-repo
+  - name: rnn-build-image
+    resourceRef:
+      name: rnn-build-image
+  podTemplate:
+    volumes:
+    - name: rnn-dataset-volume
+      persistentVolumeClaim:
+        claimName: rnn-dataset-pvc
+    - name: rnn-runtime-volume
+      persistentVolumeClaim:
+        claimName: rnn-runtime-pvc

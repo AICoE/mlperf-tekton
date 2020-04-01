@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: rnn-translator
+spec:
+  resources:
+    - name: rnn-repo
+      type: git
+    - name: rnn-build-image
+      type: image
+
+  tasks:
+    - name: build
+      taskRef:
+        name: rnn-buildah
+        kind: Task
+      resources:
+        inputs:
+          - name: source
+            resource: rnn-repo
+        outputs:
+          - name: image
+            resource: rnn-build-image
+    - name: dataset
+      taskRef:
+        name: rnn-dataset
+        kind: Task
+      resources:
+        inputs:
+          - name: image
+            resource: rnn-build-image
+        outputs:
+          - name: image
+            resource: rnn-build-image
+    - name: run
+      taskRef:
+        name: rnn-run
+        kind: Task
+      resources:
+        inputs:
+          - name: image
+            resource: rnn-build-image
+      runAfter:
+        - build

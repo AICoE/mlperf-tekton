@@ -1,0 +1,40 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: rnn-dataset
+spec:
+  inputs:
+    resources:
+    - name: image
+      type: image
+  outputs:
+    resources:
+    - name: image
+      type: image
+  steps:
+    - name: download
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf/rnn_translator
+      resources:
+        limits:
+          memory: "20Gi"
+          cpu: "20"
+        requests:
+          memory: "15Gi"
+          cpu: "15"
+      volumeMounts:
+        - name: rnn-dataset-volume
+          mountPath: /output_dir
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "./download_dataset.sh"]
+      
+    - name: verify
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf/rnn_translator
+      volumeMounts:
+        - name: rnn-dataset-volume
+          mountPath: /output_dir
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "./verify_dataset.sh"]

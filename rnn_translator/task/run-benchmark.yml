@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: rnn-run
+spec:
+  inputs:
+    resources:
+    - name: image
+      type: image
+  steps:
+    - name: run
+      image: $(inputs.resources.image.url)
+      workingDir: /mlperf/rnn_translator/pytorch
+      resources:
+        limits:
+          memory: "20Gi"
+          cpu: "20"
+        requests:
+          memory: "15Gi"
+          cpu: "15"
+      volumeMounts:
+        - name: rnn-dataset-volume
+          mountPath: /output_dir
+        - name: rnn-runtime-volume
+          mountPath: /dev/shm
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "./run_and_time.sh"]
