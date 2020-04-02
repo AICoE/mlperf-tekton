@@ -29,6 +29,13 @@ spec:
   - name: build
     image: $(inputs.params.BUILDER_IMAGE)
     workingDir: /workspace/source
+    resources:
+      limits:
+        memory: "20Gi"
+        nvidia.com/gpu: 1
+      requests:
+        memory: "15Gi"
+        nvidia.com/gpu: 1
     command: ["buildah", "bud", '--tls-verify=$(inputs.params.TLSVERIFY)', '--layers', '-f', '$(inputs.params.DOCKERFILE)', '-t', '$(outputs.resources.image.url)', '.']
     volumeMounts:
     - name: varlibcontainers
@@ -39,6 +46,13 @@ spec:
   - name: push
     image: $(inputs.params.BUILDER_IMAGE)
     workingDir: /workspace/source
+    resources:
+      limits:
+        memory: "20Gi"
+        nvidia.com/gpu: 1
+      requests:
+        memory: "15Gi"
+        nvidia.com/gpu: 1
     command: ['buildah', 'push', '--tls-verify=$(inputs.params.TLSVERIFY)', '$(outputs.resources.image.url)', 'docker://$(outputs.resources.image.url)']
     volumeMounts:
     - name: varlibcontainers

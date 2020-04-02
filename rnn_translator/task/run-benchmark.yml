@@ -14,10 +14,10 @@ spec:
       resources:
         limits:
           memory: "20Gi"
-          cpu: "20"
+          nvidia.com/gpu: 1
         requests:
           memory: "15Gi"
-          cpu: "15"
+          nvidia.com/gpu: 1
       volumeMounts:
         - name: rnn-dataset-volume
           mountPath: /output_dir
