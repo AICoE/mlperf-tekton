@@ -20,5 +20,5 @@ spec:
       persistentVolumeClaim:
         claimName: rnn-dataset-pvc
     - name: rnn-runtime-volume
-      persistentVolumeClaim:
-        claimName: rnn-runtime-pvc
+      emptyDir:
+        medium: Memory
