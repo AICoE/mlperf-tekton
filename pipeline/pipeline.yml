@@ -1,0 +1,67 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: mlperf-pipeline
+spec:
+  resources:
+    - name: repo
+      type: git
+    - name: build-image
+      type: image
+  params:
+    - name: DOCKERFILE
+      type: string
+      description: Path to Dockerfile for build
+      default: Dockerfile
+    - name: DATASET_DIR
+      type: string
+      description: Directory containing download and verify files
+      default: /mlperf
+    - name: RUN_DIR
+      type: string
+      description: Directory containing run files
+      default: /mlperf
+  tasks:
+    - name: build
+      taskRef:
+        name: buildah
+        kind: Task
+      params:
+      - name: DOCKERFILE
+        value: $(params.DOCKERFILE)
+      resources:
+        inputs:
+          - name: source
+            resource: repo
+        outputs:
+          - name: image
+            resource: build-image
+    - name: dataset
+      taskRef:
+        name: dataset
+        kind: Task
+      params:
+      - name: WORKINGDIR
+        value: $(params.DATASET_DIR)
+      resources:
+        inputs:
+          - name: image
+            resource: build-image
+        outputs:
+          - name: image
+            resource: build-image
+      runAfter:
+        - build
+    - name: run
+      taskRef:
+        name: run
+        kind: Task
+      params:
+      - name: WORKINGDIR
+        value: $(params.RUN_DIR)
+      resources:
+        inputs:
+          - name: image
+            resource: build-image
+      runAfter:
+        - dataset

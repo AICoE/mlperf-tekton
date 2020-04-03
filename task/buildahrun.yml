@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: ic-buildah-run
+  namespace: mlperf
+spec:
+  taskRef:
+    name: buildah
+  serviceAccount: image-classification
+  inputs:
+    resources:
+      - name: repo
+        resourceRef:
+          name: ic-repo
+  outputs:
+    resources:
+      - name: build-image
+        resourceRef:
+          name: ic-build-image
