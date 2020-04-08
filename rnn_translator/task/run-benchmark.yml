@@ -25,4 +25,5 @@ spec:
           mountPath: /dev/shm
       securityContext:
         privileged: true
-      command: ["/bin/sh", "./run_and_time.sh"]
+      command: ["ls", "/data"]
+      #command: ["/bin/sh", "./run_and_time.sh"]

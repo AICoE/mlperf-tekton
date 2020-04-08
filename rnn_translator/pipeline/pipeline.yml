@@ -21,17 +21,19 @@ spec:
         outputs:
           - name: image
             resource: rnn-build-image
-    - name: dataset
-      taskRef:
-        name: rnn-dataset
-        kind: Task
-      resources:
-        inputs:
-          - name: image
-            resource: rnn-build-image
-        outputs:
-          - name: image
-            resource: rnn-build-image
+    # - name: dataset
+    #   taskRef:
+    #     name: rnn-dataset
+    #     kind: Task
+    #   resources:
+    #     inputs:
+    #       - name: image
+    #         resource: rnn-build-image
+    #     outputs:
+    #       - name: image
+    #         resource: rnn-build-image
+    #   runAfter:
+    #     - build
     - name: run
       taskRef:
         name: rnn-run
