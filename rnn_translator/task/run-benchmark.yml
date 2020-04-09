@@ -11,19 +11,19 @@ spec:
     - name: run
       image: $(inputs.resources.image.url)
       workingDir: /mlperf/rnn_translator/pytorch
+      timeout: 0
       resources:
         limits:
           memory: "20Gi"
-          nvidia.com/gpu: 1
+          nvidia.com/gpu: 2
         requests:
           memory: "15Gi"
-          nvidia.com/gpu: 1
+          nvidia.com/gpu: 2
       volumeMounts:
         - name: rnn-dataset-volume
           mountPath: /output_dir
         - name: rnn-runtime-volume
-          mountPath: /dev/shm
+          mountPath: /results
       securityContext:
         privileged: true
-      command: ["ls", "/data"]
-      #command: ["/bin/sh", "./run_and_time.sh"]
+      command: ["./run_and_time.sh"]

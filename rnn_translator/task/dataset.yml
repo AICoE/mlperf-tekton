@@ -17,11 +17,11 @@ spec:
       workingDir: /mlperf/rnn_translator
       resources:
         limits:
-          memory: "20Gi"
-          nvidia.com/gpu: 1
+          memory: "35Gi"
+          nvidia.com/gpu: 2
         requests:
-          memory: "15Gi"
-          nvidia.com/gpu: 1
+          memory: "30Gi"
+          nvidia.com/gpu: 2
       volumeMounts:
         - name: rnn-dataset-volume
           mountPath: /output_dir

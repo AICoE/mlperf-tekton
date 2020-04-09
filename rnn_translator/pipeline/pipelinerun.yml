@@ -3,7 +3,7 @@ kind: PipelineRun
 metadata:
   name: rnn-translator-pipeline-run
 spec:
-  serviceAccount: mlperf
+  serviceAccountName: mlperf
   pipelineRef:
     name: rnn-translator
   timeout: "0"

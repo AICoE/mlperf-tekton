@@ -7,9 +7,7 @@ spec:
   type: git
   params:
     - name: url
-      value: https://github.com/raynalee4/mlperf-training.git
-    - name: revision
-      value: rnn-translator
+      value: https://github.com/AICoE/mlperf-training.git
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
