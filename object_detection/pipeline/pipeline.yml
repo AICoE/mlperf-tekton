@@ -3,6 +3,11 @@ kind: Pipeline
 metadata:
   name: object-detection
 spec:
+  params:
+    - name: num_gpus
+      type: string
+      description: number of gpus to use
+      default: "1"
   resources:
     - name: repo
       type: git
@@ -37,6 +42,9 @@ spec:
       taskRef:
         name: od-run
         kind: Task
+      params:
+        - name: num_gpus
+          value: $(params.num_gpus)
       resources:
         inputs:
           - name: image

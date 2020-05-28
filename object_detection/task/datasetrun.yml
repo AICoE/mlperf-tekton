@@ -1,21 +1,23 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
-  name: od-taskrun
+  name: od-dataset-run
   namespace: mlperf
 spec:
   taskRef:
-    name: od-run
+    name: od-dataset
   serviceAccount: mlperf
-  timeout: "0"
   inputs:
     resources:
       - name: image
         resourceRef:
           name: od-build-image
-    params:
-      - name: num_gpus
-        value: "4"
+  outputs:
+    resources:
+      - name: image
+        resourceRef:
+          name: od-build-image
+  timeout: "0"
   podTemplate:
     volumes:
     - name: od-dataset-volume

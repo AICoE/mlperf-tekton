@@ -11,7 +11,7 @@ spec:
       default: quay.io/buildah/stable:v1.11.0
     - name: DOCKERFILE
       description: Path to the Dockerfile to build.
-      default: object_detection/Dockerfile
+      default: object_detection/Dockerfile_centos
     - name: TLSVERIFY
       description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
       default: "false"

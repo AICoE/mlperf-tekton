@@ -4,6 +4,9 @@ metadata:
   name: od-run
 spec:
   inputs:
+    params:
+    - name: num_gpus
+      type: string
     resources:
     - name: image
       type: image
@@ -18,5 +21,14 @@ spec:
           mountPath: /dev/shm
       securityContext:
         privileged: true
-      command: ["/bin/sh", "./run_and_time.sh"]
+      env:
+      - name: NVIDIA_VISIBLE_DEVICES
+        value: 'all'
+      - name: NGPUS
+        value: '$NVIDIA_VISIBLE_DEVICES'
+      command: ["/bin/sh"]
+      args:
+        - '-c'
+        - |
+          ./run_and_time.sh $(inputs.params.num_gpus)
   
