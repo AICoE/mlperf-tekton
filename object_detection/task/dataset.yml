@@ -17,11 +17,11 @@ spec:
       workingDir: /mlperf/object_detection
       resources:
         limits:
-          memory: "8Gi"
-          cpu: "8"
+          memory: "16Gi"
+          nvidia/gpu: "4"
         requests:
-          memory: "6Gi"
-          cpu: "6"
+          memory: "12Gi"
+          nvidia/gpu: "4"
       volumeMounts:
         - name: od-dataset-volume
           mountPath: /mlperf/object_detection/pytorch/datasets/coco

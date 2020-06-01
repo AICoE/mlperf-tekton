@@ -3,6 +3,9 @@ kind: PipelineRun
 metadata:
   generateName: object-detection-pipelinerun-
 spec:
+  params:
+  - name: num_gpus
+    value: "4"
   serviceAccount: mlperf
   pipelineRef:
     name: object-detection
