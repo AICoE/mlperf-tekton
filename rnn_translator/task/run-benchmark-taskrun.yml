@@ -5,10 +5,19 @@ metadata:
   namespace: mlperf
 spec:
   taskRef:
-    name: run-benchmark
-  serviceAccount: mlperf
+    name: rnn-run
+  serviceAccountName: mlperf
+  timeout: "0"
   inputs:
     resources:
-      - name: build-image
+      - name: image
         resourceRef:
-          name: build-image
+          name: rnn-build-image 
+  podTemplate:
+    volumes:
+    - name: rnn-dataset-volume
+      persistentVolumeClaim:
+        claimName: rnn-dataset-pvc
+    - name: rnn-runtime-volume
+      emptyDir:
+        medium: Memory

@@ -32,6 +32,8 @@ spec:
         outputs:
           - name: image
             resource: rnn-build-image
+      runAfter:
+        - build
     - name: run
       taskRef:
         name: rnn-run
@@ -41,4 +43,4 @@ spec:
           - name: image
             resource: rnn-build-image
       runAfter:
-        - build
+        - dataset
