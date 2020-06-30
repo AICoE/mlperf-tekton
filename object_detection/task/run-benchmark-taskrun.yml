@@ -1,12 +1,12 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
-  name: taskrun-od
+  name: od-taskrun
   namespace: mlperf
 spec:
   taskRef:
-    name: run-od
-  serviceAccount: object-detection
+    name: od-run
+  serviceAccount: mlperf
   inputs:
     resources:
       - name: od-build-image

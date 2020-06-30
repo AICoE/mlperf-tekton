@@ -44,23 +44,7 @@ spec:
     command: ['buildah', 'push', '--tls-verify=$(inputs.params.TLSVERIFY)', '$(outputs.resources.image.url)', 'docker://$(outputs.resources.image.url)']
     securityContext:
       privileged: true
-  - name: download-dataset
-    image: $(inputs.resources.image.url)
-    workingDir: /mlperf/object_detection
-    resources:
-      limits:
-        memory: "8Gi"
-        cpu: "8"
-      requests:
-        memory: "6Gi"
-        cpu: "6"
-    volumeMounts:
-      - name: od-volume
-        mountPath: /mlperf/object_detection/pytorch/datasets/coco
-    securityContext:
-      privileged: true
-    command: ["/bin/sh", "./download_dataset.sh"]
-
+  
   volumes:
   - name: varlibcontainers
     emptyDir: {}
